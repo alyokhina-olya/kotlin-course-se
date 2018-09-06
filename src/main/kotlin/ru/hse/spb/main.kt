@@ -32,7 +32,8 @@ fun isMale(word: String): Boolean {
 fun isFemale(word: String): Boolean {
     return word.endsWith("liala") || word.endsWith("etra") || word.endsWith("inites")
 }
-fun run(wordsInSentence: List<String>): String{
+
+fun run(wordsInSentence: List<String>): String {
     if (wordsInSentence.size == 1) {
         return if (isFemale(wordsInSentence[0]) || isMale(wordsInSentence[0])) "YES" else "NO"
     }
@@ -46,24 +47,15 @@ fun run(wordsInSentence: List<String>): String{
         }
         when (type) {
             0 -> {
-                if (isAdjective(word)) {
-                    type = 0
-                } else if (isNoun(word)) {
-                    type = 1
-                } else {
-                    return "NO"
+                type = when {
+                    isAdjective(word) -> 0
+                    isNoun(word) -> 1
+                    else -> return "NO"
                 }
 
             }
-            1 -> {
-                if (!isVerb(word)) {
-                    return "NO"
-                }
-            }
-
-
+            1 -> if (!isVerb(word)) return "NO"
         }
-
     }
     return "YES"
 }
