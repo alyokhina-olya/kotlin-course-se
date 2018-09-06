@@ -57,7 +57,7 @@ fun run(wordsInSentence: List<String>): String {
             1 -> if (!isVerb(word)) return "NO"
         }
     }
-    return "YES"
+    return if (type == 1) "YES" else "NO"
 }
 
 
