@@ -1,15 +1,5 @@
 package ru.hse.spb
 
-
-fun getGreeting(): String {
-    val words = mutableListOf<String>()
-    words.add("Hello,")
-    words.add("world!")
-
-    return words.joinToString(separator = " ")
-}
-
-
 fun isAdjective(word: String): Boolean {
     return word.endsWith("lios") || word.endsWith("liala")
 }
