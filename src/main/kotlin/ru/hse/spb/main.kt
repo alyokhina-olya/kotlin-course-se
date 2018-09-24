@@ -1,5 +1,9 @@
 package ru.hse.spb
 
+enum class stage{
+    WAS_NOT_NOUN, WAS_NOUN
+}
+
 fun isAdjective(word: String): Boolean {
     return word.endsWith("lios") || word.endsWith("liala")
 }
@@ -23,35 +27,35 @@ fun isFemale(word: String): Boolean {
     return word.endsWith("liala") || word.endsWith("etra") || word.endsWith("inites")
 }
 
-fun run(wordsInSentence: List<String>): String {
+fun run(wordsInSentence: List<String>): Boolean {
     if (wordsInSentence.size == 1) {
-        return if (isFemale(wordsInSentence[0]) || isMale(wordsInSentence[0])) "YES" else "NO"
+        return isFemale(wordsInSentence[0]) || isMale(wordsInSentence[0])
     }
 
-    val gender = isMale(wordsInSentence[0])
-    var type = 0
+    val isFirstMale = isMale(wordsInSentence[0])
+    var type = stage.WAS_NOT_NOUN
     for (word in wordsInSentence) {
-        val correctType = if (gender) isMale(word) else isFemale(word)
+        val correctType = if (isFirstMale) isMale(word) else isFemale(word)
         if (!correctType) {
-            return "NO"
+            return correctType
         }
         when (type) {
-            0 -> {
+            stage.WAS_NOT_NOUN -> {
                 type = when {
-                    isAdjective(word) -> 0
-                    isNoun(word) -> 1
-                    else -> return "NO"
+                    isAdjective(word) -> stage.WAS_NOT_NOUN
+                    isNoun(word) -> stage.WAS_NOUN
+                    else -> return false
                 }
 
             }
-            1 -> if (!isVerb(word)) return "NO"
+            stage.WAS_NOUN -> if (!isVerb(word)) return isVerb(word)
         }
     }
-    return if (type == 1) "YES" else "NO"
+    return type == stage.WAS_NOUN
 }
 
 
 fun main(args: Array<String>) {
     val wordsInSentence = readLine()!!.split(" ")
-    print(run(wordsInSentence))
+    print(if (run(wordsInSentence)) "YES" else "NO")
 }
